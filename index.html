@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>別那麼拚 測驗解析</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&family=Huninn&family=Noto+Sans+TC:wght@400;500&display=swap">
+<style>
+/* Layout: one phone-width column of letter cards with hard offset shadows; denim navy + brass, like a well-kept leather wallet */
+:root{
+  --bg:#E4E9EE; --card:#FBFCFD; --soft:#EDF1F5; --tile:#D9E1E9;
+  --ink:#18222D; --muted:#5A6673; --navy:#24405E; --brass:#9A6B25; --shadow:#18222D; --btn-ink:#FBFCFD;
+  --f-head:"Noto Serif TC","Songti TC",serif;
+  --f-round:"Huninn","Noto Sans TC","PingFang TC",sans-serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F151C; --card:#17202A; --soft:#1D2834; --tile:#22303E;
+  --ink:#E4E9EE; --muted:#97A4B1; --navy:#8DB3DA; --brass:#D9A85C; --shadow:#04070A; --btn-ink:#0F151C; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F151C; --card:#17202A; --soft:#1D2834; --tile:#22303E;
+  --ink:#E4E9EE; --muted:#97A4B1; --navy:#8DB3DA; --brass:#D9A85C; --shadow:#04070A; --btn-ink:#0F151C; color-scheme:dark}
+
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.85}
+.wrap{max-width:560px;margin:0 auto;padding-block:28px 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:24px}
+h1,h2,h3{font-family:var(--f-head);font-weight:800;margin:0;text-wrap:balance;line-height:1.4}
+p{margin:0}
+.pill{align-self:flex-start;font-family:var(--f-round);font-size:13px;letter-spacing:.06em;background:var(--navy);color:var(--btn-ink);padding:4px 14px;border-radius:999px}
+.card{background:var(--card);border:2px solid var(--shadow);border-radius:18px;box-shadow:5px 5px 0 var(--shadow)}
+.muted{color:var(--muted)}
+
+/* landing */
+.intro{display:flex;flex-direction:column;gap:12px;text-align:center;align-items:center}
+.intro .pill{align-self:center}
+.intro h1{font-size:clamp(24px,6.4vw,30px)}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px}
+.tile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px 10px;background:var(--tile);border-radius:12px;border:2px solid transparent;cursor:pointer;color:var(--ink);font:inherit;text-decoration:none}
+.tile:hover,.tile:focus-visible{border-color:var(--navy);outline:none}
+.tile svg{width:100%;max-width:130px;aspect-ratio:1;height:auto}
+.tile b{font-family:var(--f-round);font-weight:400;font-size:14px}
+.opts{display:flex;flex-direction:column;gap:12px}
+.opt{display:flex;align-items:center;gap:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-family:var(--f-round);font-size:16px}
+.opt:hover,.opt:focus-visible{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--shadow);outline:none}
+.letter{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--soft);color:var(--brass);font-family:var(--f-head);font-weight:800;border:1.5px solid var(--brass)}
+
+/* result */
+.res-head{display:flex;flex-direction:column;gap:10px}
+.res-head h1{font-size:clamp(23px,6vw,28px)}
+.res-head .chosen{font-size:13.5px;color:var(--muted)}
+.res-art{align-self:flex-end;width:84px;height:84px;margin-bottom:-14px;background:var(--tile);border-radius:50%;border:2px solid var(--shadow);display:grid;place-items:center}
+.res-art svg{width:66px;height:66px}
+.quote{padding:16px 18px;border-left:5px solid var(--navy);border-radius:10px 14px 14px 10px;font-family:var(--f-head);font-weight:600;font-size:17px;line-height:1.7}
+.letter-card{padding:22px 20px;display:flex;flex-direction:column;gap:22px}
+.sec{display:flex;flex-direction:column;gap:8px}
+.sec h3{font-family:var(--f-round);font-weight:400;font-size:14.5px;color:var(--brass);letter-spacing:.04em}
+.sec p+p{margin-top:6px}
+.steps{background:var(--soft);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:14px}
+.steps b{display:block;font-weight:500}
+.say{font-family:var(--f-head);font-weight:600;font-size:17px}
+
+/* community */
+.join{padding:22px 20px;display:flex;flex-direction:column;gap:14px}
+.eyebrow{font-family:var(--f-round);font-size:13px;letter-spacing:.12em;color:var(--brass)}
+.join h2{font-size:24px}
+.btn{align-self:flex-start;display:inline-block;padding:11px 26px;border-radius:999px;background:var(--navy);color:var(--btn-ink);text-decoration:none;font-family:var(--f-round);font-size:16px;border:2px solid var(--shadow);box-shadow:3px 3px 0 var(--shadow)}
+.btn.off{background:var(--soft);color:var(--muted);box-shadow:none;cursor:default}
+.btn:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.code{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border:2px dashed var(--brass);border-radius:14px;background:var(--soft);font-family:var(--f-round)}
+.code strong{color:var(--brass);font-weight:400;font-size:18px;letter-spacing:.06em}
+.copy{flex:none;font:inherit;font-size:14px;padding:6px 16px;border-radius:999px;border:1.5px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+
+/* others */
+.others{display:flex;flex-direction:column;gap:12px}
+.others h2{font-size:22px}
+details.card{padding:0;box-shadow:3px 3px 0 var(--shadow)}
+details summary{list-style:none;cursor:pointer;padding:13px 16px;font-family:var(--f-round);display:flex;gap:8px}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"▸";color:var(--brass)}
+details[open] summary::before{content:"▾"}
+details .in{padding:0 16px 14px;display:flex;flex-direction:column;gap:8px}
+details .in a{color:var(--navy);font-size:14px}
+.close{padding:22px 20px;display:flex;flex-direction:column;gap:10px}
+.close h2{font-size:21px}
+.sign{font-family:var(--f-round);color:var(--muted);text-align:right}
+footer{font-size:12px;color:var(--muted);line-height:1.7;text-align:center}
+.back{align-self:center;font-family:var(--f-round);color:var(--navy);font-size:14px}
+</style>
+
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="ill-a" viewBox="0 0 120 120">
+      <ellipse cx="60" cy="106" rx="42" ry="5" fill="#000" opacity=".08"/>
+      <rect x="10" y="84" width="102" height="20" rx="10" fill="#F6C08B" stroke="#2B2320" stroke-width="2.6"/>
+      <rect x="14" y="74" width="36" height="16" rx="8" fill="#FFF3D6" stroke="#2B2320" stroke-width="2.4"/>
+      <g transform="rotate(-84 88 92)"><path d="M73.55 92 Q71.85 66.5 88 64.8 Q104.15 66.5 102.45 92 Z" fill="#9FB7D9" stroke="#2B2320" stroke-width="2.6" stroke-linejoin="round"/><circle cx="88" cy="42.7" r="18.7" fill="#FCE1CC" stroke="#2B2320" stroke-width="2.6"/><path d="M69.3 44.400000000000006 Q67.6 20.600000000000005 88 24.000000000000004 Q108.4 20.600000000000005 106.7 44.400000000000006 Q103.3 34.2 93.1 35.050000000000004 Q88 29.1 82.9 35.050000000000004 Q72.7 34.2 69.3 44.400000000000006 Z" fill="#2B2320" stroke="#2B2320" stroke-width="2.4" stroke-linejoin="round"/><ellipse cx="76.95" cy="50.35" rx="3.8249999999999997" ry="2.55" fill="#F59FA8" opacity=".75"/><ellipse cx="99.05" cy="50.35" rx="3.8249999999999997" ry="2.55" fill="#F59FA8" opacity=".75"/><path d="M78.65 45.25 q3 3 6 0 M92.25 45.25 q3 3 6 0" fill="none" stroke="#2B2320" stroke-width="2.4" stroke-linecap="round"/><path d="M84.6 52.900000000000006 q4 4 8 0" fill="none" stroke="#2B2320" stroke-width="2.2" stroke-linecap="round"/></g>
+      <path d="M50 80 Q78 70 108 80 L108 88 Q78 82 50 88 Z" fill="#F7A8B8" stroke="#2B2320" stroke-width="2.2" stroke-linejoin="round"/>
+      <g fill="#5E7A96" font-family="sans-serif" font-weight="700"><text x="40" y="44" font-size="16">Z</text><text x="56" y="32" font-size="12">z</text><text x="68" y="22" font-size="9">z</text></g>
+    </symbol>
+    <symbol id="ill-b" viewBox="0 0 120 120">
+      <ellipse cx="60" cy="106" rx="42" ry="5" fill="#000" opacity=".08"/>
+      <g fill="#C9B79C"><ellipse cx="14" cy="102" rx="4" ry="2.5"/><ellipse cx="26" cy="98" rx="4" ry="2.5"/><ellipse cx="36" cy="103" rx="4" ry="2.5"/></g>
+      <rect x="40" y="62" width="16" height="22" rx="6" fill="#7FC8A9" stroke="#2B2320" stroke-width="2.4"/>
+      <g transform="rotate(4 62 104)"><path d="M45.0 104 Q43.0 74.0 62 72.0 Q81.0 74.0 79.0 104 Z" fill="#F6B26B" stroke="#2B2320" stroke-width="2.6" stroke-linejoin="round"/><circle cx="62" cy="46.0" r="22.0" fill="#FCE1CC" stroke="#2B2320" stroke-width="2.6"/><path d="M40.0 48.0 Q38.0 20.0 62 24.0 Q86.0 20.0 84.0 48.0 Q80.0 36.0 68.0 37.0 Q62 30.0 56.0 37.0 Q44.0 36.0 40.0 48.0 Z" fill="#2B2320" stroke="#2B2320" stroke-width="2.4" stroke-linejoin="round"/><ellipse cx="49.0" cy="55.0" rx="4.5" ry="3.0" fill="#F59FA8" opacity=".75"/><ellipse cx="75.0" cy="55.0" rx="4.5" ry="3.0" fill="#F59FA8" opacity=".75"/><ellipse cx="54.0" cy="49.0" rx="3.4" ry="4.2" fill="#2B2320"/><circle cx="55.2" cy="47.4" r="1.3" fill="#fff"/><ellipse cx="70.0" cy="49.0" rx="3.4" ry="4.2" fill="#2B2320"/><circle cx="71.2" cy="47.4" r="1.3" fill="#fff"/><path d="M58.0 58.0 q4 4 8 0" fill="none" stroke="#2B2320" stroke-width="2.2" stroke-linecap="round"/></g>
+      <path d="M92 16 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 Z" fill="#F7C948"/>
+      <path d="M90 92 h18 M100 84 l8 8 -8 8" fill="none" stroke="#7FC8A9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="ill-c" viewBox="0 0 120 120">
+      <ellipse cx="60" cy="106" rx="42" ry="5" fill="#000" opacity=".08"/>
+      <path d="M36 28 a10 10 0 0 1 18 -7 a9 9 0 0 1 16 6 a7 7 0 0 1 -2 13 h-28 a7 7 0 0 1 -4 -12 Z" fill="#C9D2DC" stroke="#2B2320" stroke-width="2.2" stroke-linejoin="round"/>
+      <g transform="rotate(0 56 106)"><path d="M39.85 106 Q37.95 77.5 56 75.6 Q74.05 77.5 72.15 106 Z" fill="#B9A3D9" stroke="#2B2320" stroke-width="2.6" stroke-linejoin="round"/><circle cx="56" cy="50.900000000000006" r="20.9" fill="#FCE1CC" stroke="#2B2320" stroke-width="2.6"/><path d="M35.1 52.800000000000004 Q33.2 26.200000000000006 56 30.000000000000007 Q78.80000000000001 26.200000000000006 76.9 52.800000000000004 Q73.10000000000001 41.400000000000006 61.7 42.35000000000001 Q56 35.7 50.3 42.35000000000001 Q38.9 41.400000000000006 35.1 52.800000000000004 Z" fill="#2B2320" stroke="#2B2320" stroke-width="2.4" stroke-linejoin="round"/><ellipse cx="43.65" cy="59.45" rx="4.2749999999999995" ry="2.8499999999999996" fill="#F59FA8" opacity=".75"/><ellipse cx="68.35" cy="59.45" rx="4.2749999999999995" ry="2.8499999999999996" fill="#F59FA8" opacity=".75"/><ellipse cx="48.4" cy="53.75000000000001" rx="3.23" ry="3.9899999999999998" fill="#2B2320"/><circle cx="49.54" cy="52.230000000000004" r="1.2349999999999999" fill="#fff"/><ellipse cx="63.6" cy="53.75000000000001" rx="3.23" ry="3.9899999999999998" fill="#2B2320"/><circle cx="64.74" cy="52.230000000000004" r="1.2349999999999999" fill="#fff"/><path d="M52.2 64.2 q4 -4 8 0" fill="none" stroke="#2B2320" stroke-width="2.2" stroke-linecap="round"/></g>
+      <circle cx="34" cy="56" r="6" fill="#FCE1CC" stroke="#2B2320" stroke-width="2.2"/>
+      <circle cx="78" cy="56" r="6" fill="#FCE1CC" stroke="#2B2320" stroke-width="2.2"/>
+      <g fill="#5E7A96" font-family="sans-serif" font-weight="700"><text x="84" y="36" font-size="18">?</text><text x="98" y="56" font-size="13">?</text><text x="14" y="44" font-size="13">?</text></g>
+    </symbol>
+    <symbol id="ill-d" viewBox="0 0 120 120">
+      <ellipse cx="60" cy="106" rx="42" ry="5" fill="#000" opacity=".08"/>
+      <path d="M60 30 C44 46 48 60 60 64 C72 60 76 46 60 30 Z" fill="#FFB04A" opacity=".35"/>
+      <g transform="rotate(0 56 104)"><path d="M39.0 104 Q37.0 74.0 56 72.0 Q75.0 74.0 73.0 104 Z" fill="#F2606B" stroke="#2B2320" stroke-width="2.6" stroke-linejoin="round"/><circle cx="56" cy="46.0" r="22.0" fill="#FCE1CC" stroke="#2B2320" stroke-width="2.6"/><path d="M34.0 48.0 Q32.0 20.0 56 24.0 Q80.0 20.0 78.0 48.0 Q74.0 36.0 62.0 37.0 Q56 30.0 50.0 37.0 Q38.0 36.0 34.0 48.0 Z" fill="#2B2320" stroke="#2B2320" stroke-width="2.4" stroke-linejoin="round"/><ellipse cx="43.0" cy="55.0" rx="4.5" ry="3.0" fill="#F59FA8" opacity=".75"/><ellipse cx="69.0" cy="55.0" rx="4.5" ry="3.0" fill="#F59FA8" opacity=".75"/><ellipse cx="48.0" cy="49.0" rx="3.4" ry="4.2" fill="#2B2320"/><circle cx="49.2" cy="47.4" r="1.3" fill="#fff"/><ellipse cx="64.0" cy="49.0" rx="3.4" ry="4.2" fill="#2B2320"/><circle cx="65.2" cy="47.4" r="1.3" fill="#fff"/><path d="M51.0 57.0 q5 7 10 0 Z" fill="#E86A6A" stroke="#2B2320" stroke-width="2" stroke-linejoin="round"/></g>
+      <path d="M74 80 Q86 66 84 48" fill="none" stroke="#2B2320" stroke-width="8" stroke-linecap="round"/>
+      <path d="M74 80 Q86 66 84 48" fill="none" stroke="#F2606B" stroke-width="4.5" stroke-linecap="round"/>
+      <circle cx="84" cy="44" r="7" fill="#FCE1CC" stroke="#2B2320" stroke-width="2.4"/>
+      <path d="M100 18 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3 Z" fill="#F7C948" stroke="#2B2320" stroke-width="1.8"/>
+      <path d="M104 50 l1.5 3.5 3.5 1.5 -3.5 1.5 -1.5 3.5 -1.5 -3.5 -3.5 -1.5 3.5 -1.5 Z" fill="#F7C948"/>
+      <g stroke="#F7A84B" stroke-width="2.5" stroke-linecap="round"><path d="M26 30 l6 6"/><path d="M20 46 h8"/></g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <!-- landing -->
+  <section id="home" class="wrap-inner" style="display:flex;flex-direction:column;gap:22px">
+    <div class="intro">
+      <span class="pill">心理測驗 · 別那麼拚</span>
+      <h1>當有人勸你「別那麼拚」<br>你心裡第一個反應是？</h1>
+      <p class="muted">不用想太久，最先冒出來的那個就是。</p>
+    </div>
+    <div class="card tiles">
+      <a class="tile" href="#a"><svg><use href="#ill-a"/></svg><b>A｜好想休息</b></a>
+      <a class="tile" href="#b"><svg><use href="#ill-b"/></svg><b>B｜照自己的步調</b></a>
+      <a class="tile" href="#c"><svg><use href="#ill-c"/></svg><b>C｜懷疑自己</b></a>
+      <a class="tile" href="#d"><svg><use href="#ill-d"/></svg><b>D｜證明給他看</b></a>
+    </div>
+    <div class="opts">
+      <a class="card opt" href="#a"><span class="letter">A</span>其實鬆了一口氣，好想休息</a>
+      <a class="card opt" href="#b"><span class="letter">B</span>笑笑說好，但還是照自己的步調</a>
+      <a class="card opt" href="#c"><span class="letter">C</span>開始懷疑自己是不是太認真了</a>
+      <a class="card opt" href="#d"><span class="letter">D</span>更想證明給他看</a>
+    </div>
+  </section>
+
+  <!-- result -->
+  <section id="result" hidden style="display:flex;flex-direction:column;gap:22px">
+    <div class="res-head">
+      <span class="pill">給你的一封小短信</span>
+      <h1 id="r-title"></h1>
+      <p class="chosen" id="r-chosen"></p>
+    </div>
+    <div class="res-art"><svg><use id="r-art" href="#ill-a"/></svg></div>
+    <p class="card quote" id="r-quote"></p>
+    <article class="card letter-card" id="r-body"></article>
+
+    <section class="card join" id="join">
+      <span class="eyebrow">上班族的加密貨幣學習社群</span>
+      <h2>未來，要自己決定方向</h2>
+      <p>房租、帳單、爸媽變老，這些事總有一天會一起來。休息可以，但方向要自己決定。把錢的事學懂，就是替以後的自己多準備一點。不管你是哪一型，第一步都一樣。這裡有一群跟你一樣的上班族，一起從零開始學。</p>
+      <a class="btn" id="join-btn" href="#join" target="_blank" rel="noopener">加入社群 →</a>
+      <div class="code">
+        <span id="code-text">入群暗號「<strong id="code">我決定</strong>」，可以先領新手入門筆記</span>
+        <button class="copy" id="copy-btn" type="button">複製</button>
+      </div>
+    </section>
+
+    <section class="others">
+      <h2>也看看另外三種心情</h2>
+      <div id="r-others" class="others"></div>
+    </section>
+
+    <section class="card close">
+      <h2>累了就停，但方向自己決定</h2>
+      <p>別人一句「別那麼拚」，扛不起你的未來。你可以慢一點，但不用因為別人停下來。</p>
+      <p>今天，替以後的自己做一件小事吧。</p>
+      <p class="sign" id="sign"></p>
+    </section>
+    <a class="back" href="#home">← 回到題目</a>
+  </section>
+
+  <footer>加密貨幣價格波動很大，可能損失全部本金。本頁為心理測驗與學習分享，不構成任何投資建議。</footer>
+</div>
+
+<script>
+/* ===== 這裡改成你自己的資料（引號請用半形 " ） ===== */
+window.CONFIG = {
+  name: "[你的名字]",            // 發文者署名
+  joinUrl: "",                   // 社群連結，例如 https://line.me/ti/g2/xxxx
+  code: "我決定"                   // 入群暗號
+};
+/* ================================ */
+</script>
+<script>
+const CONFIG = Object.assign({ name: "", joinUrl: "", code: "" }, window.CONFIG || {});
+
+const R = {
+ "a": {
+  "title": "你不是不努力，是真的累了",
+  "chosen": "你選了 A｜其實鬆了一口氣，好想休息",
+  "quote": "想休息不是軟弱，是身體在提醒你。",
+  "secs": [
+   [
+    "你選的，其實是一種心情",
+    [
+     "聽到「別那麼拚」，你心裡第一個感覺是鬆了一口氣。不是你不想努力，是你已經撐很久了，久到忘了上一次好好休息是什麼時候。",
+     "你很負責，總是先把該做的做完，才輪到自己。"
+    ]
+   ],
+   [
+    "這份心情，背後是什麼",
+    [
+     "你可能一直覺得不能停，一停下來就會落後、就會讓人失望。所以當有人說可以休息，你才發現自己有多累。"
+    ]
+   ],
+   [
+    "如果這些日常讓你有共鳴",
+    [
+     "週末只想睡一整天；明明放假了，腦子還在想待辦事項；朋友約你，你常常說「下次吧，我好累」。"
+    ]
+   ],
+   [
+    "在錢這件事上，可以怎麼練習",
+    [
+     "很累的人，最需要的是「可以停下來的底氣」。有一筆三到六個月的預備金，你就能好好休息，不用因為怕沒錢而硬撐。也提醒自己：很累的時候，不要做大的錢的決定，不管是衝動購物，還是急著找快速賺錢的方法。先休息，再規劃。"
+    ]
+   ]
+  ],
+  "steps": [
+   [
+    "這週排一個什麼都不做的半天",
+    "休息也要放進行程。"
+   ],
+   [
+    "開始存一筆預備金",
+    "讓你累的時候，可以真的停下來。"
+   ],
+   [
+    "累的時候先不做大決定",
+    "睡飽再說。"
+   ]
+  ],
+  "ask": "如果可以放一個月的假，你最想先做什麼？",
+  "say": "我可以休息，休息完再出發。"
+ },
+ "b": {
+  "title": "你很清楚自己要去哪裡",
+  "chosen": "你選了 B｜笑笑說好，但還是照自己的步調",
+  "quote": "你不急，也不停，因為你知道方向。",
+  "secs": [
+   [
+    "你選的，其實是一種心情",
+    [
+     "別人說什麼，你會聽，也會笑笑說好，但心裡早就有自己的節奏。你不跟別人比快，也不會因為一句話就停下來。",
+     "你很穩，是那種默默做、最後讓人驚訝的人。"
+    ]
+   ],
+   [
+    "這份心情，背後是什麼",
+    [
+     "你已經想清楚自己要什麼，所以別人的意見只是參考。這份篤定，是你一點一點累積出來的。"
+    ]
+   ],
+   [
+    "如果這些日常讓你有共鳴",
+    [
+     "每天固定做一件小事，持續了很久；別人問你計畫，你常常只說「慢慢來」；朋友都很驚訝，你怎麼一直沒放棄。"
+    ]
+   ],
+   [
+    "在錢這件事上，可以怎麼練習",
+    [
+     "有自己步調的人，最適合長期的方法：每個月固定存、固定學，一點一點累積。要小心的是，別讓「穩賺」「保證獲利」這種說法打亂你的節奏。看不懂的不碰，借來的錢不投，照自己的步調走，時間會站在你這邊。"
+    ]
+   ]
+  ],
+  "steps": [
+   [
+    "寫下你三年後想達成的事",
+    "讓步調有一個方向。"
+   ],
+   [
+    "每個月固定存一筆",
+    "不用多，重點是不中斷。"
+   ],
+   [
+    "找一群步調相近的人",
+    "一起走，比較不孤單。"
+   ]
+  ],
+  "ask": "你現在堅持的那件事，三年後希望帶你到哪裡？",
+  "say": "我照自己的步調，也會走到我想去的地方。"
+ },
+ "c": {
+  "title": "你太容易被別人的聲音帶走",
+  "chosen": "你選了 C｜開始懷疑自己是不是太認真了",
+  "quote": "你的認真沒有錯，錯的是你忘了為什麼開始。",
+  "secs": [
+   [
+    "你選的，其實是一種心情",
+    [
+     "別人一句「那麼認真幹嘛」，你就開始想：是不是我想太多了？是不是我太拚了？明明是自己想做的事，突然變得不確定。",
+     "你很在意身邊的人，也不想讓自己看起來太不一樣。"
+    ]
+   ],
+   [
+    "這份心情，背後是什麼",
+    [
+     "你可能常常被說「太認真」「太在意」，久了就開始懷疑自己的努力是不是一件奇怪的事。其實認真從來不是問題，只是你需要一個不會被動搖的理由。"
+    ]
+   ],
+   [
+    "如果這些日常讓你有共鳴",
+    [
+     "報名了課程，被朋友笑一句就沒去了；想存錢，聽到別人說及時行樂，又把錢花掉；常常羨慕那些「很確定自己要什麼」的人。"
+    ]
+   ],
+   [
+    "在錢這件事上，可以怎麼練習",
+    [
+     "容易被聲音帶走的人，錢也常常被帶走：別人說要享受就花掉、別人說某個投資很好就跟著買。先寫下一個你自己的錢的目標，例如「一年存到多少」，貼在看得到的地方。下次有人說什麼，先看看那個目標，再決定要不要聽。"
+    ]
+   ]
+  ],
+  "steps": [
+   [
+    "寫下你開始努力的原因",
+    "懷疑的時候拿出來看。"
+   ],
+   [
+    "定一個自己的存錢目標",
+    "別人的意見，先對照目標再說。"
+   ],
+   [
+    "找一群一樣認真的人",
+    "在他們身邊，認真不奇怪。"
+   ]
+  ],
+  "ask": "你最近一次因為別人一句話而放棄的事，是什麼？",
+  "say": "我的認真，不需要別人同意。"
+ },
+ "d": {
+  "title": "你習慣用努力證明自己",
+  "chosen": "你選了 D｜更想證明給他看",
+  "quote": "你已經很好了，不用每次都證明。",
+  "secs": [
+   [
+    "你選的，其實是一種心情",
+    [
+     "別人越叫你別拚，你越想做給他看。被看輕的感覺，反而會變成你的燃料。",
+     "你很有骨氣，也很少輕易放棄。"
+    ]
+   ],
+   [
+    "這份心情，背後是什麼",
+    [
+     "你可能曾經被小看過，或是一直覺得要做出成績，才會被看見。這股不服輸讓你走得很遠，只是有時候也讓你很累。"
+    ]
+   ],
+   [
+    "如果這些日常讓你有共鳴",
+    [
+     "被說「你不行啦」，你會偷偷努力到半夜；生病了還是想把事情做完；看到別人成功，第一個念頭是「我也可以」。"
+    ]
+   ],
+   [
+    "在錢這件事上，可以怎麼練習",
+    [
+     "想證明自己的人，最容易急著用錢翻身：想一次賺很多、看到高報酬就想試。真正的證明不用急。先把預備金存好，再用看得懂的方法一點一點累積；不借錢投資，也小心那些保證獲利的說法。慢慢變好，也是一種很有力的證明。"
+    ]
+   ]
+  ],
+  "steps": [
+   [
+    "寫下你已經做到的三件事",
+    "你比想像中更好。"
+   ],
+   [
+    "把「急著證明」換成「長期累積」",
+    "慢慢來，比較快。"
+   ],
+   [
+    "顧好身體",
+    "能走得遠，才是真的贏。"
+   ]
+  ],
+  "ask": "如果不用證明給任何人看，你還會這麼努力嗎？為了什麼？",
+  "say": "我努力，是為了自己，不是為了贏過誰。"
+ }
+};
+const SHORT = {"a": "你不是不努力，是真的累了", "b": "你很清楚自己要去哪裡", "c": "你太容易被別人的聲音帶走", "d": "你習慣用努力證明自己"};
+const nums = ["①","②","③"];
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+function render(k){
+  const r = R[k];
+  $("r-title").textContent = r.title;
+  $("r-chosen").textContent = r.chosen;
+  $("r-quote").textContent = r.quote;
+  $("r-art").setAttribute("href", "#ill-" + k);
+  let h = r.secs.map(([t, ps]) => `<div class="sec"><h3>${t}</h3>${ps.map(p => `<p>${esc(p)}</p>`).join("")}</div>`).join("");
+  h += `<div class="sec"><h3>今天就能開始的三件小事</h3><div class="steps">${r.steps.map((s,i)=>`<div><b>${nums[i]} ${s[0]}</b>${s[1]}</div>`).join("")}</div></div>`;
+  h += `<div class="sec"><h3>留一個問題給自己</h3><p>${r.ask}</p></div>`;
+  h += `<div class="sec"><h3>也送給自己這句話</h3><p class="say">「${r.say}」</p></div>`;
+  $("r-body").innerHTML = h;
+  $("r-others").innerHTML = Object.keys(R).filter(x => x !== k).map(x =>
+    `<details class="card"><summary><b>${x.toUpperCase()}</b>｜${SHORT[x]}</summary><div class="in"><p class="muted">${R[x].quote}</p><a href="#${x}">看完整解析</a></div></details>`).join("");
+}
+function route(){
+  const k = (location.hash || "").slice(1).toLowerCase();
+  if (k && k !== "home" && !(k in R)) return;
+  const isRes = k in R;
+  $("home").hidden = isRes;
+  $("result").hidden = !isRes;
+  if (isRes) render(k);
+  window.scrollTo(0, 0);
+}
+$("sign").textContent = CONFIG.name ? "— " + CONFIG.name : "";
+$("code").textContent = CONFIG.code;
+(function setupJoin(){
+  const btn = $("join-btn");
+  let url = String(CONFIG.joinUrl || "").trim();
+  if (url && !/^https?:\/\//i.test(url)) url = "https://" + url;
+  if (url) { btn.href = url; return; }
+  btn.removeAttribute("href"); btn.removeAttribute("target");
+  btn.setAttribute("aria-disabled", "true");
+  btn.classList.add("off");
+  btn.textContent = "社群連結準備中";
+})();
+function copyText(text){
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+  return new Promise((ok, fail) => {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+    let done = false; try { done = document.execCommand("copy"); } catch (e) {}
+    ta.remove(); done ? ok() : fail();
+  });
+}
+$("copy-btn").addEventListener("click", () => {
+  const b = $("copy-btn");
+  copyText(CONFIG.code).then(() => {
+    b.textContent = "已複製"; setTimeout(() => b.textContent = "複製", 1500);
+  }).catch(() => {
+    getSelection().selectAllChildren($("code")); b.textContent = "請長按複製";
+  });
+});
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
